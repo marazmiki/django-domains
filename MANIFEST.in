@@ -2,4 +2,5 @@ include setup.py
 include AUTHORS.rst
 include README.rst
 include CHANGELOG.rst
+include MANIFEST.in
 recursive-include domains/templates/ *
