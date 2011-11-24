@@ -1,0 +1,5 @@
+include setup.py
+include AUTHORS.rst
+include README.rst
+include CHANGELOG.rst
+recursive-include domains/templates/ *

@@ -1,0 +1,10 @@
+sdist/
+.env
+.hg
+.hgignore
+.settings
+.pydevsettings
+.project
+.pydevproject
+*.swp
+*.pyc
