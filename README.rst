@@ -7,13 +7,13 @@ Installation
 
 1. Install the package
 
-::
+.. code:: bash
 
     pip install django-domains
 
 2. Open settings.py and add middlewares into end of MIDDLEWARE_CLASSES tuple:
 
-::
+.. code:: python
 
     MIDDLEWARE_CLASSES += (
         'domains.middleware.RequestMiddleware',
@@ -30,7 +30,7 @@ with requested domains (see Django sites framework).
 If you also want to use different templates for domains, add template loaders
 in begin of TEMPLATE_LOADERS tuple:
 
-::
+.. code:: python
 
     TEMPLATE_LOADERS = (
         'domains.loaders.filesystem.Loader',
@@ -40,14 +40,14 @@ in begin of TEMPLATE_LOADERS tuple:
 
 3. Run tests:
 
-::
+.. code:: bash
 
     ./manage.py test domains
 
 Usage
 -----
 
-If you want to use different template sets for each domains, just create 
+If you want to use different template sets for each domains, just create
 directories with name `domainname.tld` (don't forget add TEMPLATE_LOADERS
 as figured in Installation) and put templates here.
 
@@ -55,7 +55,7 @@ Also you can use custom function that builds domain name. You must add
 `DOMAINS_TEMPLATE_NAME_FUNCTION` attribute into your settings.py and
 specify path to naming function.
 
-Function must return tuple with path fragments. This fragments will be 
+Function must return tuple with path fragments. This fragments will be
 joined into full template path with django-domains.
 
 Expect you call this function `my_custom_template_name` and placed it in
@@ -63,7 +63,7 @@ Expect you call this function `my_custom_template_name` and placed it in
 
 Btw, you can access to `request` :)
 
-::
+.. code:: python
 
     def my_custom_template_name(template_dir, template_name):
         """
@@ -75,13 +75,13 @@ Btw, you can access to `request` :)
 
         request = get_request()
 
-        return (template_dir, 'custom', 'domains', request.get_host, 
+        return (template_dir, 'custom', 'domains', request.get_host,
                 template_name)
 
 
 Add into your `settings.py` this line:
 
-::
+.. code:: python
 
     DOMAINS_TEMPLATE_NAME_FUNCTION = 'my.project.utils.my_custom_template_name'
 

@@ -2,6 +2,8 @@
 dist/
 sdist/
 .env
+.coverage
+htmlcov/
 .hg
 .hgignore
 .settings

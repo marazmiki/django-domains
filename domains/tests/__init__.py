@@ -1,6 +1,14 @@
+# coding: utf-8
+
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 from django import test
 from django.conf import settings
 from django.contrib.sites.models import Site
+from django.utils.unittest.case import skip
+
 
 class EnvironmentTest(test.TestCase):
     """
@@ -8,6 +16,7 @@ class EnvironmentTest(test.TestCase):
     """
     def test_middleware(self):
         self.assertTrue('domains.middleware.RequestMiddleware' in settings.MIDDLEWARE_CLASSES)
+
 
 class TestBase(test.TestCase):
     """
@@ -21,48 +30,50 @@ class TestBase(test.TestCase):
         """
         self.client = test.Client()
 
+
 class TemplateLoadersTest(TestBase):
     """
     Test suite for dynamic template directories
     """
+
     def test_foo_dot_com(self):
         """
         Tests for first domain
         """
         resp = self.client.get('/', HTTP_HOST='test.foo.com')
-        assert 'test.foo.com' in resp.content
-        assert 'test.bar.com' not in resp.content
+        self.assertContains(resp, text='test.foo.com')
+        self.assertNotContains(resp, text='test.bar.com')
 
     def test_bar_dot_com(self):
         """
         Tests for second domain
         """
         resp = self.client.get('/', HTTP_HOST='test.bar.com')
-        assert 'test.bar.com' in resp.content
-        assert 'test.foo.com' not in resp.content
+        self.assertContains(resp, 'test.bar.com')
+        self.assertNotContains(resp, 'test.foo.com')
 
     def test_another_domain(self):
         """
         Tests if templates with domain name not found
         """
         resp = self.client.get('/', HTTP_HOST='github.com')
-        assert 'test.bar.com' not in resp.content
-        assert 'test.foo.com' not in resp.content
-        assert 'DEFAULT' in resp.content
+        self.assertNotContains(resp, 'test.bar.com')
+        self.assertNotContains(resp, 'test.foo.com')
+        self.assertContains(resp, 'DEFAULT')
 
     def test_complex(self):
         """
         Complex
         """
         tests = (
-            ('test.foo.com',   'test.foo.com'),
-            ('microsoft.com',  'DEFAULT'),
-            ('test.foo.com',   'test.foo.com'),
-            ('test.bar.com',   'test.bar.com'),
-            ('google.com',     'DEFAULT'),
-            ('test.bar.com',   'test.bar.com'),
-            ('test.foo.com',   'test.foo.com'),
-            ('yahoo.com',      'DEFAULT'),
+            ('test.foo.com', 'test.foo.com'),
+            ('microsoft.com', 'DEFAULT'),
+            ('test.foo.com', 'test.foo.com'),
+            ('test.bar.com', 'test.bar.com'),
+            ('google.com', 'DEFAULT'),
+            ('test.bar.com', 'test.bar.com'),
+            ('test.foo.com', 'test.foo.com'),
+            ('yahoo.com', 'DEFAULT'),
         )
 
         for domain, content in tests:
@@ -73,16 +84,10 @@ class TemplateLoadersTest(TestBase):
         """
         Custom function
         """
-        setattr(settings, 'DOMAINS_TEMPLATE_NAME_FUNCTION', 'domains.tests.test_function')
-        resp = self.client.get('/', HTTP_HOST='microsoft.com')
-
-        try:
+        with self.settings(DOMAINS_TEMPLATE_NAME_FUNCTION='domains.tests.test_function'):
+            resp = self.client.get('/', HTTP_HOST='microsoft.com')
             self.assertEquals('CUSTOM', resp.content)
-            delattr(settings, 'DOMAINS_TEMPLATE_NAME_FUNCTION')
-        except:
-            # Test failing shall not affect to other cases
-            delattr(settings, 'DOMAINS_TEMPLATE_NAME_FUNCTION')
-            raise
+
 
 class SiteIdTest(TestBase):
     """
@@ -93,7 +98,7 @@ class SiteIdTest(TestBase):
         self.sites = {
             1: Site.objects.create(domain='test.foo.com', name='Foo'),
             2: Site.objects.create(domain='test.bar.com', name='Bar'),
-            3: Site.objects.create(domain='github.com',   name='Git'),
+            3: Site.objects.create(domain='github.com', name='Git'),
         }
 
     def test_1(self):
@@ -102,7 +107,8 @@ class SiteIdTest(TestBase):
                 resp = self.client.get('/', HTTP_HOST=site.domain)
                 curr = Site.objects.get_current()
                 self.assertEquals(curr.domain, site.domain)
-                self.assertEquals(curr.pk,     site.pk)
+                self.assertEquals(curr.pk, site.pk)
+
 
 def test_function(template_dir, template_name):
     """

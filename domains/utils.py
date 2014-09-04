@@ -1,3 +1,9 @@
+# coding: utf-8
+
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 from django.conf import settings
 from django.utils.importlib import import_module
 
@@ -6,8 +12,10 @@ try:
 except ImportError:
     from django.utils._threading_local import local
 
+
 # Threaded variable namespace
 _thread_locals = local()
+
 
 def set_thread_variable(key, var):
     """
@@ -15,11 +23,13 @@ def set_thread_variable(key, var):
     """
     setattr(_thread_locals, key, var)
 
+
 def get_thread_variable(key, default=None):
     """
     Gets the threaded variable
     """
     return getattr(_thread_locals, key, default)
+
 
 def get_hostname():
     """
@@ -29,6 +39,7 @@ def get_hostname():
     if request is None:
         return
     return request.get_host().split(':')[0].lower()
+
 
 def get_template_name(template_dir, template_name):
     """
@@ -43,11 +54,13 @@ def get_template_name(template_dir, template_name):
     hostname = get_hostname()
     return template_dir, hostname, template_name if hostname else None
 
+
 def get_request():
     """
     Returns request object from current thread
     """
     return get_thread_variable('request')
+
 
 class SiteIDHook(object):
     """

@@ -1,8 +1,16 @@
+# coding: utf-8
+
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 from domains.utils import set_thread_variable
 from django.conf import settings
 from django.contrib.sites.models import Site
 
+
 HOST_CACHE = {}
+
 
 class RequestMiddleware(object):
     """
@@ -11,6 +19,7 @@ class RequestMiddleware(object):
     def process_request(self, request):
         set_thread_variable('request', request)
 
+
 class DynamicSiteMiddleware(object):
     """
     Define current Django Site for requested hostname
@@ -18,7 +27,7 @@ class DynamicSiteMiddleware(object):
 
     def process_request(self, request):
         host = request.get_host()
-        shost = host.rsplit(':', 1)[0] # only host, without port
+        shost = host.rsplit(':', 1)[0]  # just host, no port
 
         try:
             settings.SITE_ID.set(HOST_CACHE[host])
@@ -34,7 +43,7 @@ class DynamicSiteMiddleware(object):
         except Site.DoesNotExist:
             pass
 
-        if shost != host: # get by hostname without port
+        if shost != host:  # get by hostname without port
             try:
                 site = Site.objects.get(domain=shost)
                 HOST_CACHE[host] = site.pk
@@ -43,14 +52,14 @@ class DynamicSiteMiddleware(object):
             except Site.DoesNotExist:
                 pass
 
-        try: # get by settings.SITE_ID
+        try:  # get by settings.SITE_ID
             site = Site.objects.get(pk=settings.SITE_ID)
             HOST_CACHE[host] = site.pk
             return
         except Site.DoesNotExist:
             pass
 
-        try: # misconfigured settings?
+        try:  # misconfigured settings?
             site = Site.objects.all()[0]
             HOST_CACHE[host] = site.pk
             settings.SITE_ID.set(site.pk)

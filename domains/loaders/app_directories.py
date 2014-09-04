@@ -1,13 +1,15 @@
+# coding: utf-8
+
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 from django.template.loaders.app_directories import Loader as BaseLoader, app_template_dirs
-from django.conf import settings
 from django.utils._os import safe_join
 from domains.utils import get_template_name
-import os
+
 
 class Loader(BaseLoader):
-    """
-    Django 1.2 version of the template loader class
-    """
     is_usable = True
 
     def get_template_sources(self, template_name, template_dirs=None):
