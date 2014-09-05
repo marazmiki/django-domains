@@ -104,7 +104,7 @@ class SiteIdTest(TestBase):
         }
 
     def test_1(self):
-        for i in six.range(0, 3):
+        for i in six.moves.range(0, 3):
             for pk, site in self.sites.items():
                 self.client.get('/', HTTP_HOST=site.domain)
                 curr = Site.objects.get_current()

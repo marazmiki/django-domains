@@ -26,3 +26,6 @@ clean:
 	rm -rf htmlcov
 	rm -f .coverage
 	find . -name "*.pyc" -exec rm -rf {} \;
+
+coveralls:
+	coveralls --config_file=coverage.rc
