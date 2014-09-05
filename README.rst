@@ -2,6 +2,20 @@
 django-domains
 ==============
 
+
+.. image:: https://badge.fury.io/py/django-domains.png
+    :target: http://badge.fury.io/py/django-domains
+
+.. image:: https://travis-ci.org/marazmiki/django-domains.png?branch=master
+    :target: https://travis-ci.org/marazmiki/django-domains
+
+.. image:: https://coveralls.io/repos/marazmiki/django-domains/badge.png?branch=master
+    :target: https://coveralls.io/r/marazmiki/django-domains?branch=master
+
+.. image:: https://pypip.in/d/django-domains/badge.png
+    :target: https://pypi.python.org/pypi/django-domains
+
+
 Installation
 ------------
 
