@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-from django.template.loaders.app_directories import Loader as BaseLoader, app_template_dirs
+from django.template.loaders.app_directories import (Loader as BaseLoader,
+                                                     app_template_dirs)
 from django.utils._os import safe_join
 from domains.utils import get_template_name
 
@@ -28,7 +29,8 @@ class Loader(BaseLoader):
                     continue
                 yield safe_join(*template_parts)
             except UnicodeDecodeError:
-                # The template dir name was a bytestring that wasn't valid UTF-8.
+                # The template dir name was a bytestring
+                # that wasn't valid UTF-8.
                 raise
             except ValueError:
                 # The joined path was located outside of template_dir.

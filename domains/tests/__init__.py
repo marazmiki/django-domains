@@ -7,7 +7,7 @@ from __future__ import division
 from django import test
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.utils.unittest.case import skip
+from django.utils import six
 
 
 class EnvironmentTest(test.TestCase):
@@ -15,7 +15,8 @@ class EnvironmentTest(test.TestCase):
     Tests the environment
     """
     def test_middleware(self):
-        self.assertTrue('domains.middleware.RequestMiddleware' in settings.MIDDLEWARE_CLASSES)
+        self.assertIn('domains.middleware.RequestMiddleware',
+                      settings.MIDDLEWARE_CLASSES)
 
 
 class TestBase(test.TestCase):
@@ -84,7 +85,8 @@ class TemplateLoadersTest(TestBase):
         """
         Custom function
         """
-        with self.settings(DOMAINS_TEMPLATE_NAME_FUNCTION='domains.tests.test_function'):
+        func = 'domains.tests.test_function'
+        with self.settings(DOMAINS_TEMPLATE_NAME_FUNCTION=func):
             resp = self.client.get('/', HTTP_HOST='microsoft.com')
             self.assertEquals('CUSTOM', resp.content)
 
@@ -102,9 +104,9 @@ class SiteIdTest(TestBase):
         }
 
     def test_1(self):
-        for i in xrange(0, 3):
+        for i in six.range(0, 3):
             for pk, site in self.sites.items():
-                resp = self.client.get('/', HTTP_HOST=site.domain)
+                self.client.get('/', HTTP_HOST=site.domain)
                 curr = Site.objects.get_current()
                 self.assertEquals(curr.domain, site.domain)
                 self.assertEquals(curr.pk, site.pk)

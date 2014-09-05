@@ -64,5 +64,5 @@ class DynamicSiteMiddleware(object):
             HOST_CACHE[host] = site.pk
             settings.SITE_ID.set(site.pk)
             return
-        except IndexError: # no sites in db
+        except IndexError:  # no sites in db
             pass
