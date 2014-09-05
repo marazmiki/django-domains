@@ -7,7 +7,6 @@ from __future__ import division
 from django import test
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.utils import six
 
 
 class EnvironmentTest(test.TestCase):
@@ -79,7 +78,7 @@ class TemplateLoadersTest(TestBase):
 
         for domain, content in tests:
             resp = self.client.get('/', HTTP_HOST=domain)
-            self.assertEquals(content, resp.content)
+            self.assertContains(resp, content)
 
     def test_custom_function(self):
         """
@@ -88,7 +87,7 @@ class TemplateLoadersTest(TestBase):
         func = 'domains.tests.test_function'
         with self.settings(DOMAINS_TEMPLATE_NAME_FUNCTION=func):
             resp = self.client.get('/', HTTP_HOST='microsoft.com')
-            self.assertEquals('CUSTOM', resp.content)
+            self.assertContains(resp, 'CUSTOM')
 
 
 class SiteIdTest(TestBase):
@@ -104,7 +103,7 @@ class SiteIdTest(TestBase):
         }
 
     def test_1(self):
-        for i in six.moves.range(0, 3):
+        for _ in range(0, 3):
             for pk, site in self.sites.items():
                 self.client.get('/', HTTP_HOST=site.domain)
                 curr = Site.objects.get_current()
