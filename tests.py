@@ -41,6 +41,10 @@ settings.configure(
 
 def main():
     from django.test.utils import get_runner
+    import django
+
+    if hasattr(django, 'setup'):
+        django.setup()
 
     find_pattern = 'domains'
 
