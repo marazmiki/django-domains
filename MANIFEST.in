@@ -3,4 +3,6 @@ include AUTHORS.rst
 include README.rst
 include CHANGELOG.rst
 include MANIFEST.in
-recursive-include domains/templates/ *
+include domains/templates/test_index.html
+include domains/templates/custom_test_index.html
+recursive-include domains/templates/*.html *.html
