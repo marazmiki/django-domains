@@ -60,24 +60,3 @@ def get_request():
     Returns request object from current thread
     """
     return get_thread_variable('request')
-
-
-class SiteIDHook(object):
-    """
-    Dynamic SITE_ID attribute class
-    """
-    def __repr__(self):
-        return str(self.__int__())
-
-    def __int__(self):
-        try:
-            return _thread_locals.SITE_ID
-        except AttributeError:
-            _thread_locals.SITE_ID = 1
-            return _thread_locals.SITE_ID
-
-    def __hash__(self):
-        return self.__int__()
-
-    def set(self, value):
-        _thread_locals.SITE_ID = value
