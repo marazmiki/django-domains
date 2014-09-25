@@ -6,7 +6,14 @@ from __future__ import absolute_import
 from __future__ import division
 from django import test
 from django.conf import settings
+from django.conf.urls import url
 from django.contrib.sites.models import Site
+from django.shortcuts import render
+
+
+urlpatterns = [
+    url('^$', lambda request: render(request, 'test_index.html')),
+]
 
 
 class EnvironmentTest(test.TestCase):
@@ -22,7 +29,7 @@ class TestBase(test.TestCase):
     """
     Common things
     """
-    urls = 'domains.tests.urls'
+    urls = 'domains.tests'
 
     def setUp(self):
         """

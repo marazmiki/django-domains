@@ -8,6 +8,8 @@ from domains.utils import _thread_locals
 
 
 class HookBase(object):
+    attribute = 'DJANGO_ATTRIBUTE'
+
     def __repr__(self):
         return str(self.__int__())
 
@@ -22,31 +24,10 @@ class HookBase(object):
         return self.__int__()
 
     def get(self):
-        return getattr(_thread_locals, self.setting_name)
+        return getattr(_thread_locals, self.attribute)
 
     def set(self, value):
-        setattr(_thread_locals, self.setting_name, value)
+        setattr(_thread_locals, self.attribute, value)
 
-
-class SiteIDHook(HookBase, int):
-    """
-    Dynamic SITE_ID attribute class
-    """
-    setting_name = 'SITE_ID'
-    settings_type = int
-
-
-class MediaRootHook(object):
-    pass
-
-
-class MediaUrlHook(object):
-    pass
-
-
-class StaticRootHook(object):
-    pass
-
-
-class StaticUrlHook(object):
-    pass
+    def apply(self, request):
+        raise NotImplementedError()

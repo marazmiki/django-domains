@@ -7,6 +7,7 @@ from __future__ import division
 from django.conf import settings
 
 
-HOOKS = getattr(settings, 'DOMAINS_HOOKS', (
-    'domains.hooks.SiteIDHook',
-))
+HOOKS = getattr(settings, 'DOMAINS_HOOKS',
+                (
+                    'domains.hooks.SiteIDHook',
+                ))
