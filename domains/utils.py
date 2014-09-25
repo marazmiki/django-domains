@@ -9,7 +9,6 @@ from django.core.exceptions import ImproperlyConfigured
 from domains.compat import import_by_path, local
 
 
-
 # Threaded variable namespace
 _thread_locals = local()
 installed_hooks = {}
@@ -21,10 +20,6 @@ def get_hooks():
         (
             'domains.hooks.site_id.SiteIDHook',
         ))
-
-
-def apply_hook(hook, attribute, request):
-    c = import_by_path(hook)
 
 
 def setup_hook(hook):

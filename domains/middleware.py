@@ -29,6 +29,7 @@ class DynamicSiteMiddleware(DomainSettingsPatchMiddleware):
     def __init__(self):
         super(DynamicSiteMiddleware, self).__init__()
         warnings.warn(
-            "domains.middleware.DynamicSiteMiddleware is deprecated. Please use "
-            "domains.middleware.DomainSettingsPatchMiddleware instead"
+            "domains.middleware.DynamicSiteMiddleware is deprecated. "
+            "Please use domains.middleware.DomainSettingsPatchMiddleware "
+            "instead"
         )
