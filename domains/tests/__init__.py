@@ -115,4 +115,4 @@ def test_function(template_dir, template_name):
     """
     Generates parts of template name
     """
-    return template_dir, 'custom_'+template_name
+    return template_dir, 'custom_' + template_name

@@ -7,25 +7,33 @@ from __future__ import division
 from domains.utils import _thread_locals
 
 
-class SiteIDHook(object):
-    """
-    Dynamic SITE_ID attribute class
-    """
+class HookBase(object):
     def __repr__(self):
         return str(self.__int__())
 
     def __int__(self):
         try:
-            return _thread_locals.SITE_ID
+            return self.get()
         except AttributeError:
-            _thread_locals.SITE_ID = 1
-            return _thread_locals.SITE_ID
+            self.set(1)
+            return self.get()
 
     def __hash__(self):
         return self.__int__()
 
+    def get(self):
+        return getattr(_thread_locals, self.setting_name)
+
     def set(self, value):
-        _thread_locals.SITE_ID = value
+        setattr(_thread_locals, self.setting_name, value)
+
+
+class SiteIDHook(HookBase, int):
+    """
+    Dynamic SITE_ID attribute class
+    """
+    setting_name = 'SITE_ID'
+    settings_type = int
 
 
 class MediaRootHook(object):
