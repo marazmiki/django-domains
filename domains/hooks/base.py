@@ -53,7 +53,7 @@ class IntHookBase(HookBase, int):
             return self.get()
 
 
-class StrHookBase(text_type, HookBase):
+class StrHookBase(HookBase, text_type):
     default_value = ''
 
     def coerce(self, v):
@@ -67,3 +67,26 @@ class StrHookBase(text_type, HookBase):
             return self.get()
 
     __unicode__ = __str__
+
+
+class TupleHookBase(HookBase, tuple):
+    default_value = ('default', )
+
+    def coerce(self, v):
+        return tuple(v)
+
+
+class ListHookBase(HookBase, list):
+    default_value = ['default']
+
+    def coerce(self, v):
+        return list(v)
+
+
+class DictHookBase(HookBase, dict):
+    default_value = {'default': 1}
+
+    def coerce(self, v):
+        return dict(v)
+
+

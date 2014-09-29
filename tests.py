@@ -37,10 +37,18 @@ settings.configure(
             'NAME': ':MEMORY:'
         }
     },
-    DOMAINS_TEST_ATTRIBUTE='default',
+    DOMAINS_TEST_ATTRIBUTE_STR='default',
+    DOMAINS_TEST_ATTRIBUTE_INT=42,
+    DOMAINS_TEST_ATTRIBUTE_DICT={1: 1, 2: 2},
+    DOMAINS_TEST_ATTRIBUTE_LIST=[1, 2, 3],
+    DOMAINS_TEST_ATTRIBUTE_TUPLE=('one', 'two'),
     DOMAINS_HOOKS=(
         'domains.hooks.site_id.SiteIDHook',
-        'domains.tests.TestHook',
+        'domains.tests.TestStrHook',
+        'domains.tests.TestIntHook',
+        'domains.tests.TestListHook',
+        'domains.tests.TestDictHook',
+        'domains.tests.TestTupleHook',
     ))
 
 
