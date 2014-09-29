@@ -36,7 +36,12 @@ settings.configure(
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': ':MEMORY:'
         }
-    })
+    },
+    DOMAINS_TEST_ATTRIBUTE='default',
+    DOMAINS_HOOKS=(
+        'domains.hooks.site_id.SiteIDHook',
+        'domains.tests.TestHook',
+    ))
 
 
 def main():

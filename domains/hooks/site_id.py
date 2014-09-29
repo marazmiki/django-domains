@@ -7,7 +7,7 @@ from __future__ import division
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db.models.loading import get_model
-from domains.hooks.base import HookBase
+from domains.hooks.base import IntHookBase
 
 
 HOST_CACHE = {}
@@ -33,15 +33,14 @@ def get_site_by_host(hostname, field=None):
         pass
 
 
-class SiteIDHook(HookBase, int):
+class SiteIDHook(IntHookBase):
     """
     Dynamic SITE_ID attribute class
     """
     attribute = 'SITE_ID'
-    settings_type = int
 
     def __init__(self, *args, **kwargs):
-        super(HookBase, self).__init__(*args, **kwargs)
+        super(IntHookBase, self).__init__(*args, **kwargs)
         self.sites_support = get_site_model() is not None
 
     def cache(self, host, value):

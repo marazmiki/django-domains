@@ -8,6 +8,12 @@ from django.utils.importlib import import_module
 
 
 try:
+    from django.utils import six
+    text_type = six.text_type
+except ImportError:
+    text_type = str
+
+try:
     from threading import local    # NOQA
 except ImportError:
     from django.utils._threading_local import local    # NOQA
