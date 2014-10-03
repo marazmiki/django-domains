@@ -69,18 +69,22 @@ class StrHookBase(HookBase, text_type):
     __unicode__ = __str__
 
 
-class TupleHookBase(HookBase, tuple):
+class IterMixin(object):
+    def __iter__(self):
+        return iter(self.get())
+
+    def coerce(self, v):
+        return self.base_type(v)
+
+
+class TupleHookBase(HookBase, IterMixin, tuple):
     default_value = ('default', )
-
-    def coerce(self, v):
-        return tuple(v)
+    base_type = tuple
 
 
-class ListHookBase(HookBase, list):
+class ListHookBase(HookBase, IterMixin, list):
     default_value = ['default']
-
-    def coerce(self, v):
-        return list(v)
+    base_type = list
 
 
 class DictHookBase(HookBase, dict):
@@ -88,5 +92,3 @@ class DictHookBase(HookBase, dict):
 
     def coerce(self, v):
         return dict(v)
-
-

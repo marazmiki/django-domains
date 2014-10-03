@@ -9,8 +9,9 @@ from django.conf import settings
 from django.conf.urls import url
 from django.contrib.sites.models import Site
 from django.shortcuts import render
-from domains.hooks.base import StrHookBase, TupleHookBase, ListHookBase, DictHookBase, IntHookBase
 from domains.compat import text_type
+from domains.hooks.base import (StrHookBase, TupleHookBase, ListHookBase,
+                                DictHookBase, IntHookBase)
 
 
 urlpatterns = [
@@ -130,18 +131,18 @@ class TemplateLoadersTest(TestBase):
             resp = self.client.get('/', HTTP_HOST=domain)
             self.assertContains(resp, content)
 
-
-            self.assertEquals(text_type(domain),
-                              text_type(settings.DOMAINS_TEST_ATTRIBUTE_STR))
-
-            self.assertEquals(0,  # @TODO!
-                              settings.DOMAINS_TEST_ATTRIBUTE_INT)
-
-#            self.assertEquals((domain, domain, domain), 
-#                              tuple(settings.DOMAINS_TEST_ATTRIBUTE_TUPLE))
-
-            self.assertEquals([domain, domain, domain],  # @TODO!
-                              list(settings.DOMAINS_TEST_ATTRIBUTE_LIST))
+            self.assertEquals(
+                text_type(domain),
+                text_type(settings.DOMAINS_TEST_ATTRIBUTE_STR))
+            self.assertEquals(
+                0,  # @TODO!
+                settings.DOMAINS_TEST_ATTRIBUTE_INT)
+            self.assertEquals(
+                (domain, domain, domain),
+                tuple(settings.DOMAINS_TEST_ATTRIBUTE_TUPLE))
+            self.assertEquals(
+                [domain, domain, domain],
+                list(settings.DOMAINS_TEST_ATTRIBUTE_LIST))
 
     def test_custom_function(self):
         """
