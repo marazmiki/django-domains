@@ -19,45 +19,43 @@ urlpatterns = [
 ]
 
 
-class TestIntHook(IntHookBase):
+hook_str = lambda h: h
+hook_int = lambda h: len(h)
+hook_dict = lambda h: {1: h + '_1', 2: h + '_2'}
+hook_list = lambda h: [h, h, h]
+hook_tuple = lambda h: (h, h, h)
+
+
+class TestHookBase(object):
+    hook_function = hook_str
+
+    def value(self, request):
+        return globals()[self.hook_function](request.get_host())
+
+
+class TestIntHook(TestHookBase, IntHookBase):
     attribute = 'DOMAINS_TEST_ATTRIBUTE_INT'
-
-    def value(self, request):
-        return 0
+    hook_function = 'hook_int'
 
 
-class TestStrHook(StrHookBase):
+class TestStrHook(TestHookBase, StrHookBase,):
     attribute = 'DOMAINS_TEST_ATTRIBUTE_STR'
-
-    def value(self, request):
-        return request.get_host()
+    hook_function = 'hook_str'
 
 
-class TestDictHook(DictHookBase):
+class TestDictHook(TestHookBase, DictHookBase):
     attribute = 'DOMAINS_TEST_ATTRIBUTE_DICT'
-
-    def value(self, request):
-        v = request.get_host()
-        return {
-            1: v + '_1',
-            2: v + '_2',
-        }
+    hook_function = 'hook_dict'
 
 
-class TestListHook(ListHookBase):
+class TestListHook(TestHookBase, ListHookBase):
     attribute = 'DOMAINS_TEST_ATTRIBUTE_LIST'
-
-    def value(self, request):
-        v = request.get_host()
-        return [v, v, v]
+    hook_function = 'hook_list'
 
 
-class TestTupleHook(TupleHookBase):
+class TestTupleHook(TestHookBase, TupleHookBase):
     attribute = 'DOMAINS_TEST_ATTRIBUTE_TUPLE'
-
-    def value(self, request):
-        v = request.get_host()
-        return (v, v, v)
+    hook_function = 'hook_tuple'
 
 
 class EnvironmentTest(test.TestCase):
@@ -131,19 +129,6 @@ class TemplateLoadersTest(TestBase):
             resp = self.client.get('/', HTTP_HOST=domain)
             self.assertContains(resp, content)
 
-            self.assertEquals(
-                text_type(domain),
-                text_type(settings.DOMAINS_TEST_ATTRIBUTE_STR))
-            self.assertEquals(
-                0,  # @TODO!
-                settings.DOMAINS_TEST_ATTRIBUTE_INT)
-            self.assertEquals(
-                (domain, domain, domain),
-                tuple(settings.DOMAINS_TEST_ATTRIBUTE_TUPLE))
-            self.assertEquals(
-                [domain, domain, domain],
-                list(settings.DOMAINS_TEST_ATTRIBUTE_LIST))
-
     def test_custom_function(self):
         """
         Custom function
@@ -152,6 +137,44 @@ class TemplateLoadersTest(TestBase):
         with self.settings(DOMAINS_TEMPLATE_NAME_FUNCTION=func):
             resp = self.client.get('/', HTTP_HOST='microsoft.com')
             self.assertContains(resp, 'CUSTOM')
+
+    def test_hook_str(self):
+        domain = 'test.foo.com'
+        self.client.get('/', HTTP_HOST=domain)
+        self.assertEquals(hook_str(domain),
+                          text_type(settings.DOMAINS_TEST_ATTRIBUTE_STR))
+
+    def test_hook_int(self):
+        domain = 'test.foo.com'
+        self.client.get('/', HTTP_HOST=domain)
+        self.assertEquals(hook_int(domain),
+                          int(settings.DOMAINS_TEST_ATTRIBUTE_INT))
+
+    def test_hook_tuple(self):
+        domain = 'test.foo.com'
+        self.client.get('/', HTTP_HOST=domain)
+        self.assertEquals(hook_tuple(domain),
+                          tuple(settings.DOMAINS_TEST_ATTRIBUTE_TUPLE))
+
+    def test_hook_list(self):
+        domain = 'test.foo.com'
+        self.client.get('/', HTTP_HOST=domain)
+        self.assertEquals(hook_list(domain),
+                          list(settings.DOMAINS_TEST_ATTRIBUTE_LIST))
+
+    def test_hook_dict(self):
+        domain = 'test.foo.com'
+        self.client.get('/', HTTP_HOST=domain)
+        dt = dict(settings.DOMAINS_TEST_ATTRIBUTE_DICT)
+        print(dt)
+        print(dt.items())
+        print(dt.keys())
+        print(dt.values())
+        print(" 1 in", 1 in dt)
+        self.assertEquals(
+            {1: domain + '_1', 2: domain + '_2'},
+            dt
+        )
 
 
 class SiteIdTest(TestBase):

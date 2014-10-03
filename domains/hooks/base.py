@@ -71,24 +71,44 @@ class StrHookBase(HookBase, text_type):
 
 class IterMixin(object):
     def __iter__(self):
+        print('%s: %s iter %s' % (self.__class__.__name__,
+                                  self.attribute, self.base_type))
         return iter(self.get())
 
     def coerce(self, v):
+        print('%s: %s (%s) coerce to %s' % (self.__class__.__name__,
+                                            self.attribute, v,
+                                            self.base_type))
         return self.base_type(v)
 
 
 class TupleHookBase(HookBase, IterMixin, tuple):
-    default_value = ('default', )
+    default_value = ()
     base_type = tuple
 
 
 class ListHookBase(HookBase, IterMixin, list):
-    default_value = ['default']
+    default_value = []
     base_type = list
 
 
-class DictHookBase(HookBase, dict):
-    default_value = {'default': 1}
+class DictHookBase(HookBase, IterMixin, dict):
+    default_value = {}
+    base_type = dict
 
-    def coerce(self, v):
-        return dict(v)
+    def __getitem__(self, key):
+        print("getitem")
+        return self.get()[key]
+
+    def __setitem__(self, key, value):
+        print("setitem")
+        v = self.get()
+        v.update(**{key: value})
+        self.set(v)
+
+    def __delitem__(self, key):
+        print("delitem")
+
+        v = self.get()
+        del v[key]
+        self.set(v)

@@ -10,7 +10,13 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 
+TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner'
+if get_version() >= '1.6':
+    TEST_RUNNER='django.test.runner.DiscoverRunner'
+
+
 settings.configure(
+    TEST_RUNNER=TEST_RUNNER,
     DEBUG=False,
     ROOT_URLCONF='domains.tests.urls',
     INSTALLED_APPS=(
