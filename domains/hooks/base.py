@@ -16,11 +16,13 @@ class HookBase(object):
         self._args = args
         self._kwargs = kwargs
         if self.attribute is None:
-            raise ImproperlyConfigured("Please specify `attribute` into "
-                                       "your hook class")
+            raise ImproperlyConfigured(
+                "Please specify `attribute` into  your hook class"
+            )
 
     def __repr__(self):
-        return text_type(self.get())
+        v = self.get()
+        return text_type(v)
 
     def __hash__(self):
         return self.get()
@@ -42,6 +44,8 @@ class HookBase(object):
 
 
 class IntHookBase(HookBase, int):
+    default_value = 0
+
     def coerce(self, v):
         return int(v)
 
@@ -71,15 +75,7 @@ class StrHookBase(HookBase, text_type):
 
 class IterMixin(object):
     def __iter__(self):
-        print('%s: %s iter %s' % (self.__class__.__name__,
-                                  self.attribute, self.base_type))
         return iter(self.get())
-
-    def coerce(self, v):
-        print('%s: %s (%s) coerce to %s' % (self.__class__.__name__,
-                                            self.attribute, v,
-                                            self.base_type))
-        return self.base_type(v)
 
 
 class TupleHookBase(HookBase, IterMixin, tuple):
@@ -92,23 +88,24 @@ class ListHookBase(HookBase, IterMixin, list):
     base_type = list
 
 
-class DictHookBase(HookBase, IterMixin, dict):
+class DictHookBase(HookBase, IterMixin, object):
     default_value = {}
     base_type = dict
 
-    def __getitem__(self, key):
-        print("getitem")
-        return self.get()[key]
+    # def __delitem__(self, key):
+    #     print("delitem")
+    #
+    #     v = self.get()
+    #     del v[key]
+    #     self.set(v)
+    #
+    # def __cmp__(self):
+    #     print('cmp')
 
-    def __setitem__(self, key, value):
-        print("setitem")
-        v = self.get()
-        v.update(**{key: value})
-        self.set(v)
-
-    def __delitem__(self, key):
-        print("delitem")
-
-        v = self.get()
-        del v[key]
-        self.set(v)
+    # def __contains__(self, k):
+    #     print('contains')
+    #
+    # def __getattribute__(self, name):
+    #     return''
+    # return dict(self.get())[name]
+    # return super(self.get().__class__, self).__getattribute__(key)

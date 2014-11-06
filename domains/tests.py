@@ -165,16 +165,8 @@ class TemplateLoadersTest(TestBase):
     def test_hook_dict(self):
         domain = 'test.foo.com'
         self.client.get('/', HTTP_HOST=domain)
-        dt = dict(settings.DOMAINS_TEST_ATTRIBUTE_DICT)
-        print(dt)
-        print(dt.items())
-        print(dt.keys())
-        print(dt.values())
-        print(" 1 in", 1 in dt)
-        self.assertEquals(
-            {1: domain + '_1', 2: domain + '_2'},
-            dt
-        )
+        self.assertDictEqual(hook_dict(domain),
+                             dict(settings.DOMAINS_TEST_ATTRIBUTE_DICT))
 
 
 class SiteIdTest(TestBase):

@@ -33,7 +33,6 @@ def setup_hook(hook):
 
     installed_hooks[hook_instance.attribute] = hook_instance
     setattr(settings, hook_instance.attribute, hook_instance)
-    print("hook %s for %s installed" % (hook, hook_instance.attribute))
 
 
 def get_installed_hooks():
