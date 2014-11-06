@@ -92,20 +92,8 @@ class DictHookBase(HookBase, IterMixin, object):
     default_value = {}
     base_type = dict
 
-    # def __delitem__(self, key):
-    #     print("delitem")
-    #
-    #     v = self.get()
-    #     del v[key]
-    #     self.set(v)
-    #
-    # def __cmp__(self):
-    #     print('cmp')
+    def __iter__(self):
+        return iter(self.get().items())
 
-    # def __contains__(self, k):
-    #     print('contains')
-    #
-    # def __getattribute__(self, name):
-    #     return''
-    # return dict(self.get())[name]
-    # return super(self.get().__class__, self).__getattribute__(key)
+    def __getattr__(self, name):
+        return self.get()[name]

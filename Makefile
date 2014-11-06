@@ -17,7 +17,7 @@ flake8:
 coverage:
 	make clean
 	python setup.py develop
-	coverage run --include=${project_name}/* setup.py test
+	coverage run --rcfile=coverage.rc --include=${project_name}/* setup.py test
 	coverage html
 
 clean:
@@ -28,4 +28,4 @@ clean:
 	find . -name "*.pyc" -exec rm -rf {} \;
 
 coveralls:
-	coveralls --config_file=coverage.rc
+	coveralls --rcfile=coverage.rc

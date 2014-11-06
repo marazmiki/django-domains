@@ -5,10 +5,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 from django import test
+from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.sites.models import Site
 from django.shortcuts import render
+from domains import setup_hook
 from domains.compat import text_type
 from domains.hooks.base import (StrHookBase, TupleHookBase, ListHookBase,
                                 DictHookBase, IntHookBase)
@@ -26,6 +28,13 @@ hook_list = lambda h: [h, h, h]
 hook_tuple = lambda h: (h, h, h)
 
 
+def test_function(template_dir, template_name):
+    """
+    Generates parts of template name
+    """
+    return template_dir, 'custom_' + template_name
+
+
 class TestHookBase(object):
     hook_function = hook_str
 
@@ -34,26 +43,41 @@ class TestHookBase(object):
 
 
 class TestIntHook(TestHookBase, IntHookBase):
+    """
+    Test cases for integer variables hook
+    """
     attribute = 'DOMAINS_TEST_ATTRIBUTE_INT'
     hook_function = 'hook_int'
 
 
-class TestStrHook(TestHookBase, StrHookBase,):
+class TestStrHook(TestHookBase, StrHookBase):
+    """
+    Test cases for string variables hook
+    """
     attribute = 'DOMAINS_TEST_ATTRIBUTE_STR'
     hook_function = 'hook_str'
 
 
 class TestDictHook(TestHookBase, DictHookBase):
+    """
+    Test cases for dictionary variables hook
+    """
     attribute = 'DOMAINS_TEST_ATTRIBUTE_DICT'
     hook_function = 'hook_dict'
 
 
 class TestListHook(TestHookBase, ListHookBase):
+    """
+    Test cases for list variables hook
+    """
     attribute = 'DOMAINS_TEST_ATTRIBUTE_LIST'
     hook_function = 'hook_list'
 
 
 class TestTupleHook(TestHookBase, TupleHookBase):
+    """
+    Test cases for tuple variables hook
+    """
     attribute = 'DOMAINS_TEST_ATTRIBUTE_TUPLE'
     hook_function = 'hook_tuple'
 
@@ -63,8 +87,10 @@ class EnvironmentTest(test.TestCase):
     Tests the environment
     """
     def test_middleware(self):
-        self.assertIn('domains.middleware.RequestMiddleware',
-                      settings.MIDDLEWARE_CLASSES)
+        self.assertIn(
+            'domains.middleware.RequestMiddleware',
+            settings.MIDDLEWARE_CLASSES
+        )
 
 
 class TestBase(test.TestCase):
@@ -190,8 +216,7 @@ class SiteIdTest(TestBase):
                 self.assertEquals(curr.pk, site.pk)
 
 
-def test_function(template_dir, template_name):
-    """
-    Generates parts of template name
-    """
-    return template_dir, 'custom_' + template_name
+class TestCore(test.TestCase):
+    def test_improperly_hook_class(self):
+        self.assertRaises(ImproperlyConfigured,
+                          lambda: setup_hook('hook.that.DoesNotExist'))
