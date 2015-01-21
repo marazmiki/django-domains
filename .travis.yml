@@ -9,7 +9,7 @@ python:
 
 env:
   - DJANGO=django==1.4.18
-  - DJANGO=django==1.5.13
+  - DJANGO=django==1.5.12
   - DJANGO=django==1.6.10
   - DJANGO=django==1.7.3
 
