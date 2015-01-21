@@ -25,6 +25,7 @@ clean:
 	rm -rf *.egg-info *.egg
 	rm -rf htmlcov
 	rm -f .coverage
+	rm -rf build dist
 	find . -name "*.pyc" -exec rm -rf {} \;
 
 coveralls:
