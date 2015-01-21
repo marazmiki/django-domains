@@ -8,7 +8,7 @@ test:
 
 release:
 	python setup.py sdist --format=zip,bztar,gztar register upload
-
+	python setup.py bdist_wheel register upload
 
 flake8:
 	flake8 --max-complexity 12 ${project_name}
