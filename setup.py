@@ -7,7 +7,7 @@ import os
 
 ROOT_PACKAGE = 'django-domains'
 DIR = os.path.dirname(__file__)
-VERSION = '0.4.0b'
+VERSION = '0.4.1'
 
 
 def long_description():
