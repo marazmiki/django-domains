@@ -21,11 +21,11 @@ urlpatterns = [
 ]
 
 
-hook_str = lambda h: h
-hook_int = lambda h: len(h)
-hook_dict = lambda h: {1: h + '_1', 2: h + '_2'}
-hook_list = lambda h: [h, h, h]
-hook_tuple = lambda h: (h, h, h)
+def hook_str(h): return h
+def hook_int(h): return len(h)
+def hook_dict(h): return {1: h + '_1', 2: h + '_2'}
+def hook_list(h): return [h, h, h]
+def hook_tuple(h): return (h, h, h)
 
 
 def test_function(template_dir, template_name):
