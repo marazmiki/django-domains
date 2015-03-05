@@ -19,6 +19,7 @@ matrix:
   exclude:
     - python: "2.6"
       env: DJANGO=django==1.7.5
+    - python: "2.6"
       env: DJANGO=django==1.8b1
     - python: "3.3"
       env: DJANGO=django==1.4.19
