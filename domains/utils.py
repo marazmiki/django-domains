@@ -23,9 +23,11 @@ def get_hooks():
 
 
 def setup_hook(hook):
+    from domains.hooks.base import HookBase
+
     hook_cls = import_by_path(hook)
     hook_instance = hook_cls()
-    from domains.hooks.base import HookBase
+
     if not isinstance(hook_instance, HookBase):
         raise ImproperlyConfigured(
             '%s is not a HookBase instance' % hook
@@ -33,7 +35,7 @@ def setup_hook(hook):
 
     installed_hooks[hook_instance.attribute] = hook_instance
     setattr(settings, hook_instance.attribute, hook_instance)
-
+    print("installed", installed_hooks)
 
 def get_installed_hooks():
     return installed_hooks

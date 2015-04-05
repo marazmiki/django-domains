@@ -11,11 +11,13 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 
 TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner'
+
 if get_version() >= '1.6':
     TEST_RUNNER='django.test.runner.DiscoverRunner'
 
 
-settings.configure(
+SETTINGS = dict(
+    SITE_ID=1,
     TEST_RUNNER=TEST_RUNNER,
     DEBUG=False,
     ROOT_URLCONF='domains.tests.urls',
@@ -30,12 +32,6 @@ settings.configure(
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
         'domains.middleware.RequestMiddleware',
         'domains.middleware.DynamicSiteMiddleware',
-    ),
-    TEMPLATE_LOADERS=(
-        'domains.loaders.filesystem.Loader',
-        'domains.loaders.app_directories.Loader',
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
     ),
     DATABASES={
         'default': {
@@ -58,6 +54,29 @@ settings.configure(
     ))
 
 
+TEMPLATE_LOADERS = (
+    'domains.loaders.filesystem.Loader',
+    'domains.loaders.app_directories.Loader',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+if get_version() >= '1.8':
+    SETTINGS['TEMPLATES'] = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'OPTIONS': {
+                'loaders': TEMPLATE_LOADERS
+            },
+        },
+]   
+
+else:
+    SETTINGS['TEMPLATE_LOADERS'] = TEMPLATE_LOADERS
+
+settings.configure(**SETTINGS)
+
+
 def main():
     from django.test.utils import get_runner
     import django
@@ -66,9 +85,6 @@ def main():
         django.setup()
 
     find_pattern = 'domains'
-
-    if get_version() >= '1.6':
-        find_pattern += '.tests'
 
     test_runner = get_runner(settings)(verbosity=2, interactive=True)
     failed = test_runner.run_tests([find_pattern])

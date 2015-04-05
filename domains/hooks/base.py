@@ -11,6 +11,7 @@ from domains.compat import text_type
 
 class HookBase(object):
     attribute = None
+    default_value = ''
 
     def __init__(self, *args, **kwargs):
         self._args = args
@@ -31,7 +32,11 @@ class HookBase(object):
         return v
 
     def get(self):
-        return self.coerce(getattr(_thread_locals, self.attribute))
+        try:
+            v = getattr(_thread_locals, self.attribute)
+        except AttributeError:
+            v = self.default_value
+        return self.coerce(v)
 
     def set(self, value):
         setattr(_thread_locals, self.attribute, self.coerce(value))
