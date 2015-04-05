@@ -31,7 +31,8 @@ def version():
 
 if __name__ == '__main__':
     setup(name=ROOT_PACKAGE,
-          description='An application that allows you to run many different sites on one Django instance',
+          description=('An application that allows you to run many '
+                       'different sites on one Django instance'),
           author='Mikhail Porokhovnichenko',
           author_email='marazmiki@gmail.com',
           version=version(),
@@ -44,5 +45,4 @@ if __name__ == '__main__':
               'Environment :: Web Environment',
               'Programming Language :: Python',
               'Framework :: Django'
-          ],
-    )
+          ])

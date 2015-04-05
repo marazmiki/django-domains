@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner'
 
 if get_version() >= '1.6':
-    TEST_RUNNER='django.test.runner.DiscoverRunner'
+    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 
 SETTINGS = dict(
@@ -61,18 +61,24 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.template.context_processors.request',
+)
+
 if get_version() >= '1.8':
     SETTINGS['TEMPLATES'] = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
             'OPTIONS': {
-                'loaders': TEMPLATE_LOADERS
+                'loaders': TEMPLATE_LOADERS,
+                'context_processors': TEMPLATE_CONTEXT_PROCESSORS,
             },
-        },
-]   
+        }]
 
 else:
-    SETTINGS['TEMPLATE_LOADERS'] = TEMPLATE_LOADERS
+    SETTINGS.update(TEMPLATE_LOADERS=TEMPLATE_LOADERS)
+
 
 settings.configure(**SETTINGS)
 

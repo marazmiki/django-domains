@@ -6,7 +6,5 @@ from __future__ import absolute_import
 from __future__ import division
 from domains.utils import get_hooks, setup_hook
 
-
 for hook in get_hooks():
-    print(hook)
     setup_hook(hook)

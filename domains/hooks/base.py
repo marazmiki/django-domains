@@ -32,10 +32,7 @@ class HookBase(object):
         return v
 
     def get(self):
-        try:
-            v = getattr(_thread_locals, self.attribute)
-        except AttributeError:
-            v = self.default_value
+        v = getattr(_thread_locals, self.attribute, self.default_value)
         return self.coerce(v)
 
     def set(self, value):
@@ -58,7 +55,7 @@ class IntHookBase(HookBase, int):
         try:
             return self.get()
         except AttributeError:
-            self.set(1)
+            self.set(self.default_value)
             return self.get()
 
 
