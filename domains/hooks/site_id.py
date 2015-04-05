@@ -38,6 +38,7 @@ class SiteIDHook(IntHookBase):
     Dynamic SITE_ID attribute class
     """
     attribute = 'SITE_ID'
+    default_value = 1
 
     def __init__(self, *args, **kwargs):
         super(IntHookBase, self).__init__(*args, **kwargs)

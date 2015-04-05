@@ -1,3 +1,8 @@
+0.5
+---
+* Added support Django 1.8
+* New hook machinery
+
 0.2
 ---
 

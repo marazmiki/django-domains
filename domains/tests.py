@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-from django import test
+from django import test, get_version
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 from django.conf.urls import url
@@ -223,8 +223,13 @@ class SiteIdTest(TestBase):
     def test_1(self):
         for _ in range(0, 3):
             for pk, site in self.sites.items():
-                self.client.get('/', HTTP_HOST=site.domain)
-                curr = Site.objects.get_current()
+                resp = self.client.get('/', HTTP_HOST=site.domain)
+
+                if get_version() >= '1.8':
+                    curr = Site.objects.get_current(resp.context['request'])
+                else:
+                    curr = Site.objects.get_current()
+
                 self.assertEquals(curr.domain, site.domain)
                 self.assertEquals(curr.pk, site.pk)
 

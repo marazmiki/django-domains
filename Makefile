@@ -11,7 +11,7 @@ release:
 	python setup.py bdist_wheel register upload
 
 flake8:
-	flake8 --max-complexity 12 ${project_name}
+	flake8 --max-complexity 12 ${project_name} setup.py tests.py
 
 
 coverage:
@@ -25,6 +25,7 @@ clean:
 	rm -rf *.egg-info *.egg
 	rm -rf htmlcov
 	rm -f .coverage
+	rm -rf build dist
 	find . -name "*.pyc" -exec rm -rf {} \;
 
 coveralls:
