@@ -11,7 +11,7 @@ release:
 	python setup.py bdist_wheel register upload
 
 flake8:
-	flake8 --max-complexity 12 ${project_name}
+	flake8 --max-complexity 12 ${project_name} setup.py tests.py
 
 
 coverage:
