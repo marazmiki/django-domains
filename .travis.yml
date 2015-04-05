@@ -8,20 +8,23 @@ python:
 
 
 env:
-  - DJANGO=django==1.4.18
+  - DJANGO=django==1.4.19
   - DJANGO=django==1.5.12
-  - DJANGO=django==1.6.10
-  - DJANGO=django==1.7.3
+  - DJANGO=django==1.6.11
+  - DJANGO=django==1.7.7
+  - DJANGO=django==1.8
 
 
 matrix:
   exclude:
     - python: "2.6"
-      env: DJANGO=django==1.7.3
+      env: DJANGO=django==1.7.7
+    - python: "2.6"
+      env: DJANGO=django==1.8
     - python: "3.3"
-      env: DJANGO=django==1.4.18
+      env: DJANGO=django==1.4.19
     - python: "3.4"
-      env: DJANGO=django==1.4.18
+      env: DJANGO=django==1.4.19
 
 
 install:
