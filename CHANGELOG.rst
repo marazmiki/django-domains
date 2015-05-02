@@ -1,3 +1,8 @@
+0.5.1
+-----
+
+* Update head django versions
+
 0.5
 ---
 * Added support Django 1.8
