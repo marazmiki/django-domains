@@ -1,3 +1,9 @@
+0.5.2
+-----
+
+* Update head django versions
+
+
 0.5.1
 -----
 
