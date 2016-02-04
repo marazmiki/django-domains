@@ -6,7 +6,12 @@ from __future__ import absolute_import
 from __future__ import division
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.db.models.loading import get_model
+try:
+    from django.apps import apps
+    get_model = apps.get_model
+except ImportError:
+    from django.db.models.loading import get_model
+
 from domains.hooks.base import IntHookBase
 
 
