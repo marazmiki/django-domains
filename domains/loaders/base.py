@@ -16,6 +16,7 @@ except ImportError:
 from django.utils._os import safe_join
 from domains.utils import get_template_name
 
+
 class DomainLoaderMixin(object):
     is_usable = True
 
@@ -30,7 +31,7 @@ class DomainLoaderMixin(object):
             template_dirs = self.default_template_dirs
 
         try:
-            use_origin = self.get_contents != None
+            use_origin = self.get_contents is not None
         except AttributeError:
             use_origin = False
 
@@ -50,7 +51,6 @@ class DomainLoaderMixin(object):
                 else:
                     yield name
 
-
             except UnicodeDecodeError:
                 # The template dir name was a bytestring that
                 # wasn't valid UTF-8.
@@ -60,4 +60,3 @@ class DomainLoaderMixin(object):
                 # template_dir (it might be inside another one, so this isn't
                 # fatal).
                 pass
-

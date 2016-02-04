@@ -9,6 +9,7 @@ from domains.utils import get_hooks, setup_hook
 
 from django.apps import AppConfig
 
+
 class DomainsConfig(AppConfig):
     name = "domains"
 

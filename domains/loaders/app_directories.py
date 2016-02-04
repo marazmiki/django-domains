@@ -17,11 +17,12 @@ except ImportError:
 
 from .base import DomainLoaderMixin
 
+
 class Loader(DomainLoaderMixin, BaseLoader):
     """
-    get_template_sources looks in the saved request object from the middleware for
-    directories and passes back the path. Doesn't verify that the
-    path is valid, though.
+    get_template_sources looks in the saved request object from
+    the middleware for directories and passes back the path.
+    Doesn't verify that the path is valid, though.
     """
 
     default_template_dirs = app_template_dirs
