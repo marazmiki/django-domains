@@ -5,9 +5,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 from django.template.loaders.app_directories import Loader as BaseLoader
-from django.utils._os import safe_join
-from domains.utils import get_template_name
-
 
 try:
     # Django 1.7x or older
@@ -18,29 +15,13 @@ except ImportError:
     from django.template.utils import get_app_template_dirs
     app_template_dirs = get_app_template_dirs('templates')
 
+from .base import DomainLoaderMixin
 
-class Loader(BaseLoader):
-    is_usable = True
+class Loader(DomainLoaderMixin, BaseLoader):
+    """
+    get_template_sources looks in the saved request object from the middleware for
+    directories and passes back the path. Doesn't verify that the
+    path is valid, though.
+    """
 
-    def get_template_sources(self, template_name, template_dirs=None):
-        """
-        Looks in the saved request object from the middleware for
-        directories and passes back the path. Doesn't verify that the
-        path is valid, though.
-        """
-        if not template_dirs:
-            template_dirs = app_template_dirs
-
-        for template_dir in template_dirs:
-            try:
-                template_parts = get_template_name(template_dir, template_name)
-                if not template_parts:
-                    continue
-                yield safe_join(*template_parts)
-            except UnicodeDecodeError:
-                # The template dir name was a bytestring
-                # that wasn't valid UTF-8.
-                raise
-            except ValueError:
-                # The joined path was located outside of template_dir.
-                pass
+    default_template_dirs = app_template_dirs
