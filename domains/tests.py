@@ -10,7 +10,7 @@ from django.conf import settings
 from django.conf.urls import url
 from django.contrib.sites.models import Site
 from django.shortcuts import render
-from domains import setup_hook
+from domains.utils import setup_hook
 from domains.compat import text_type
 from domains.hooks.base import (StrHookBase, TupleHookBase, ListHookBase,
                                 DictHookBase, IntHookBase)
