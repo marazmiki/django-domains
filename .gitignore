@@ -5,6 +5,7 @@ sdist/
 .env
 .coverage
 htmlcov/
+.tox/
 .hg
 .hgignore
 .settings
