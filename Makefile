@@ -1,3 +1,4 @@
+.PHONY: test release flake8 coverage clean coveralls
 project_name=domains
 
 test:
@@ -15,8 +16,6 @@ flake8:
 
 
 coverage:
-	make clean
-	python setup.py develop
 	coverage run --rcfile=coverage.rc --include=${project_name}/* setup.py test
 	coverage html
 
