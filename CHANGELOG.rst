@@ -1,3 +1,13 @@
+0.6.0
+-----
+
+* Drop support of older python versions (2.6, 3.2, 3.3)
+* Drop support of older Django versions (1.6 and older)
+* Add support for Python 3.5
+* Add support for Django 1.9  (thanks to `Jordan Reiter <mailto:jordanreiter@gmail.com>`_
+* Migrate to Django Applications API (thanks to `Jordan Reiter <mailto:jordanreiter@gmail.com>`_
+* Improve PEP-0008 support and some minor code refactoring
+
 0.5.2
 -----
 

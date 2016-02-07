@@ -7,7 +7,7 @@ import os
 
 ROOT_PACKAGE = 'django-domains'
 DIR = os.path.dirname(__file__)
-VERSION = '0.5.2'
+VERSION = '0.6'
 
 
 def long_description():
@@ -31,14 +31,17 @@ def version():
 
 if __name__ == '__main__':
     setup(name=ROOT_PACKAGE,
-          description=('An application that allows you to run many '
-                       'different sites on one Django instance'),
+          description=(
+              'An application that allows you to run many '
+              'different sites on one Django instance'
+          ),
           author='Mikhail Porokhovnichenko',
           author_email='marazmiki@gmail.com',
           version=version(),
           long_description=long_description(),
           packages=find_packages(),
           include_package_data=True,
+          install_requires=['Django'],
           test_suite='tests.main',
           zip_safe=False,
           classifiers=[
