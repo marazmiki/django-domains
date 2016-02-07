@@ -1,35 +1,24 @@
 language: python
 
 python:
-  - "2.6"
-  - "2.7"
-  - "3.3"
   - "3.4"
 
-
 env:
-  - DJANGO=django==1.4.19
-  - DJANGO=django==1.5.12
-  - DJANGO=django==1.6.11
-  - DJANGO=django==1.7.8
-  - DJANGO=django==1.8.2
-
-
-matrix:
-  exclude:
-    - python: "2.6"
-      env: DJANGO=django==1.7.8
-    - python: "2.6"
-      env: DJANGO=django==1.8.2
-    - python: "3.3"
-      env: DJANGO=django==1.4.19
-    - python: "3.4"
-      env: DJANGO=django==1.4.19
-
+  - TOXENV=py27-dj17
+  - TOXENV=py27-dj18
+  - TOXENV=py27-dj19
+  - TOXENV=py34-dj17
+  - TOXENV=py34-dj18
+  - TOXENV=py34-dj19
+  - TOXENV=py35-dj18
+  - TOXENV=py35-dj19
 
 install:
-  - pip install -q $DJANGO flake8 coverage coveralls
-  - python setup.py install
+  - pip install -qU tox flake8 coverage coveralls
+
+
+script: 
+  - tox
 
 before_script:
   - make flake8
